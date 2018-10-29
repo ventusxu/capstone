@@ -137,5 +137,8 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1011968808749-i3u3hj0la6nnosvcs40cc3spmlvs3kg4.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '1eJUZwLIdadsvJGy24iiiF2u'
+
 # Activate Django-Heroku.
 django_heroku.settings(locals())
