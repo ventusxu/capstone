@@ -5,14 +5,6 @@
     <title>Title</title>
 </head>
 
-<body>
- This is our homepage.
-<a href="{% url "social:begin" "google-oauth2" %}">Google+</a>
-
-<div id="google-plus-button">Google+ Sign In</div>
-
-</body>
-
 <script src="https://apis.google.com/js/api:client.js"></script>
 
 <script type="text/javascript">
@@ -20,7 +12,8 @@
     var auth2;
 
     auth2 = gapi.auth2.init({
-      client_id: "'1011968808749-i3u3hj0la6nnosvcs40cc3spmlvs3kg4.apps.googleusercontent.com'"
+      client_id: "1011968808749-i3u3hj0la6nnosvcs40cc3spmlvs3kg4.apps.googleusercontent.com",
+      scopes: "https://www.googleapis.com/auth/plus.login"
     });
 
     auth2.then(function () {
@@ -49,5 +42,15 @@
     });
   });
 </script>
+
+<body>
+ This is our homepage.
+<a href="{% url "social:begin" "google-oauth2" %}">Google+</a>
+
+<div id="google-plus-button">Google+ Sign In</div>
+
+</body>
+
+
 
 </html>
