@@ -154,9 +154,5 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['gmail.com', 'uci.edu']
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1011968808749-i3u3hj0la6nnosvcs40cc3spmlvs3kg4.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'H1_eEMyhA1a3NJE9OcvoJL2b'
 
-SOCIAL_AUTH_GOOGLE_PLUS_KEY = '1011968808749-i3u3hj0la6nnosvcs40cc3spmlvs3kg4.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_PLUS_SECRET = 'H1_eEMyhA1a3NJE9OcvoJL2b'
-
-
 # Activate Django-Heroku.
 django_heroku.settings(locals())
