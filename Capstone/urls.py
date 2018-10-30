@@ -20,6 +20,6 @@ urlpatterns = [
     path('', include('search.urls')),  # search page
     path('users/', include('users.urls')),  # user module
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls'))
+    path('accounts/', include('django.contrib.auth.urls')),
     path('',include('social_django.urls', namespace='social')),
 ]
