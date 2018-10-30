@@ -130,6 +130,8 @@ STATIC_URL = '/static/'
 
 # Social Auth Django Settings
 
+LOGIN_REDIRECT_URL = '/'
+
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.open_id.OpenIdAuth',
     'social_core.backends.google.GoogleOpenId',
