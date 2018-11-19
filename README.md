@@ -6,7 +6,7 @@ capstone project for MCS
 ```python3 -m venv venv```
 
 ## start venv
-```source venv/bin/activatee```
+```source venv/bin/activate```
 
 ## install Django & Django-heroku & gunicorn & auth
 ```
