@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title>MoDeal</title>
+<meta name="description" content="MoDeal Homepage" />
+<meta name="keywords" content="search and sign in" />
+<link href="" rel="stylesheet" />
+<base target ="_blank" />
+<style type="text/css">
+    #box{
+        width: 600px;
+        margin: 5px auto;
+        font-family: 'Times New Roman';
+        font-size: 18px;
+    }
+    input{
+        width: 498px;
+        border: 1px solid #c1cdc1;
+        height: 38px;
+        float: left;
+        padding:0 0 0 0px;
+    }
+    #search_content{
+        font-family: 'Times New Roman';
+        font-size: 18px;
+        width: 100px;
+        height: 40px;
+        float: right;
+        background: teal;
+        color: white;
+        text-align: center;
+        line-height: 18px;
+        cursor: pointer;
+    }
+    .div-right{position:absolute;
+	right:40px;
+	top:20px;}
+    .div-picture{position:absolute;
+	right:40%;
+	top:25%;}
+    .div-box{position:absolute;
+        right:30%;
+        top:45%;}
+	
+</style>
+</head>
+<body>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<p>
+<div class="div-right">
+  <a href="file:///C:/Users/Ziqi/Desktop/Sign in.html" target="_blank" align="right">Sign up or log in</a>
+</div>
+</p>
+
+<div class="div-picture">
+<p Style = "Color:teal;font-size:75px" align = "center"><img src="https://lh6.googleusercontent.com/F3ZeSI7euvOescZuJRopWXptVHm4WhMn-B4RpEgl1PsUgqg9EcrVnpnlSHxdWR4Kfr7IumHUJuIi_zvha77-=w2560-h1478" width="115px" height="115px"/>MoDeal</p>
+</div>
+
+{#<form action = "file:///C:/Users/Ziqi/Desktop/Results.html">#}
+{#  <div class="div-box" id="box">#}
+{#    <input type="text" name="search" placeholder="    Enter product information" autocomplete = "off">#}
+{#    <input type="submit" value = "Search" id="search">#}
+{#  </div>#}
+{#</form>#}
+<form action="/index/" method="post">
+    {% csrf_token %}
+    <div class="div-box" id="box">
+       <p>
+        <input type="text" name="search_content" placeholder="    Enter product information" autocomplete = "off">
+        <input type="submit" value = "Search" id="search_content">
+      </p>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+  </form>
+</body>
+</html>
+	

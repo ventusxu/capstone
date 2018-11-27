@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <meta charset="UTF-8">
+  <title>Searching Results</title>
+  <style type="text/css">
+
+    #box{
+        width: 1000px;
+        margin: 0px auto;
+        font-family: 'Times New Roman';
+        font-size: 18px;
+	    float:center;
+    }
+    input{
+        width: 498px;
+        border: 1px solid #c1cdc1;
+        height: 38px;
+        float: center;
+        padding:0 0 0 0px;
+    }
+    #search_content{
+        font-family: 'Times New Roman';
+        font-size: 18px;
+        width: 100px;
+        height: 40px;
+        float: center;
+        background: teal;
+        color: white;
+        text-align: center;
+        line-height: 18px;
+        cursor: pointer;
+    }
+
+    #tb {table-layout:fixed;}
+
+    .div-right{position:absolute;
+	right:40px;
+	top:20px;}
+    .div-picture{position:absolute;
+	left:1px;
+	top:5px;}
+    .div-box{position:absolute;
+	left:130px;
+	top:40px;}
+
+    .table > thead > tr > th { border-color: transparent;}
+
+    .table > tbody > tr > td,
+    .table > tbody > tr > th {
+    border-width: 5px;
+    border-color: transparent;}
+}
+
+
+</style>
+</head>
+
+
+<body>
+
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+<div data-spy="scroll" data-target="#myScrollspy" data-offset="20">
+<p>
+  <div class="div-right">
+  <a href="file:///C:/Users/Ziqi/Desktop/Sign in.html" target="_blank" align="right">Sign up or log in</a>
+  </div>
+    <p>
+    <div class="div-picture">
+      <p><img src="https://lh6.googleusercontent.com/F3ZeSI7euvOescZuJRopWXptVHm4WhMn-B4RpEgl1PsUgqg9EcrVnpnlSHxdWR4Kfr7IumHUJuIi_zvha77-=w2560-h1478" width="120px" height="120px"/><p>
+{#      <p><img src="{% static 'img/moyu.jpg' %}" width="120px" height="120px"/><p>#}
+
+    </div>
+    </p>
+
+  <form action="/index/" method="post">
+    {% csrf_token %}
+    <div class="div-box" id="box">
+       <p>
+{#        <input type="text" name="search_content" placeholder="    Enter product information" autocomplete = "off">#}
+        <input type="text" name="search_content" value=' {{ search_content  }}' placeholder="    Enter product information" autocomplete = "off">
+        <input type="submit" value = "Search" id="search_content">
+      </p>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+  </form>
+</p>
+
+<div class="table-responsive">
+  <table class="table table-hover" id = "tb" style="word-break:break-all; word-wrap:break-all;">
+    <thead>
+      <tr>
+    <tr>
+      <th class="text-center" >Source</th>
+      <th class="text-center" >Picture</th>
+      <th class="text-center" >Name</th>
+      <th class="text-center" >Price</th>
+      <th class="text-center" >Visit Website</th>
+      <th class="text-center" >Add to Favorites</th>	
+    </tr>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in data %}
+      <tr>
+        <td class="text-center">{{ item.source }}</td>
+        <td class="text-center"><img src={{ item.picture }} width="180px" height="180px"/></td>
+        <td class="text-center">{{ item.name }}</td>
+	<td class="text-center">{{ item.price }}</td>
+	<td class="text-center"><a href="{{ item.url }}">link</a></td>
+        <td class="text-center"><button type="button" class="btn btn-primary" onclick="alert('Added to Favorites!')">Add to Favorites</button>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</div>
+</body>
+</html>

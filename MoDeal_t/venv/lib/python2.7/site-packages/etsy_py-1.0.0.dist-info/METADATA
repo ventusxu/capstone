@@ -1,0 +1,48 @@
+Metadata-Version: 2.0
+Name: etsy-py
+Version: 1.0.0
+Summary: Python2 & Python3 module for Etsy's API.
+Home-page: https://github.com/jaddison/etsy_py
+Author: James Addison
+Author-email: addi00+github.com@gmail.com
+License: BSD
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Requires-Dist: requests
+Requires-Dist: six
+
+## etsy_py
+
+Python2 & Python3 module for Etsy's API.
+
+
+### Installation
+
+```
+pip install etsy_py
+```
+
+### API Usage
+
+```
+from etsy_py.api import EtsyAPI
+
+api = EtsyAPI(api_key='secret key from etsy app')
+
+# get a list of all top level Etsy categories
+r = api.get('taxonomy/categories')
+
+data = r.json()
+```
+
+Refer to Etsy's API documentation at https://www.etsy.com/developers/ for more information.
+
+

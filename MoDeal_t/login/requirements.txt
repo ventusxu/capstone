@@ -1,0 +1,6 @@
+lxml
+bottlenose
+python-dateutil
+pip install requests
+pip install wapy
+ebaysdk
