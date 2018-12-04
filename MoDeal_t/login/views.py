@@ -13,10 +13,47 @@ import urllib
 import json
 import time
 from wapy.api import Wapy
+import importlib
+#import wordpress_api
+import lxml
+from lxml import html
 
 # Create your views here.
 
 items_list = []
+
+def SortItemList(items_list):
+    # for x in items_list:
+    #     print(float(x['price'][1:]))
+    items_list.sort(key=lambda x: float(x['price'][1:]))
+    # print()
+    # print()
+    # for x in items_list:
+    #     print(float(x['price'][1:]))
+    # sorted(items_list[0:40], )
+
+def BestBuyAPI(search_content, items_list):
+     baseURL = 'https://api.bestbuy.com/v1/products'
+     keyword = '((search=' + search_content + '))'
+     apiKey = '?apiKey=8JOVjHGJNdm9BbEIbxX8bNfB'
+     sortOptions = '&sort=salePrice.asc'
+     showOptions = '&show=name,salePrice,url,image'
+     responseFormat = '&format=json'
+     url = baseURL + keyword + apiKey + sortOptions + showOptions + responseFormat
+     response = requests.get(url)
+     # print(type(response))
+     response_dict = json.loads(response.text)
+     # print(type(response_dict))
+     for item in response_dict['products']:
+      temp = {
+       'source': 'BestBuy',
+       'name': item['name'],
+       'price': '$' + str(item['salePrice']),
+       'url': item['url'],
+       'picture': item['image'],  # return a string, which is the url of the image.
+      }
+      items_list.append(temp)
+
 
 def WalmartAPI(search_content, items_list):
     wapy = Wapy('47ctafawz2svc2qst3s4h7p4')
@@ -25,7 +62,7 @@ def WalmartAPI(search_content, items_list):
         #print (products[x].weight)  # 1.0
         #print (products[x].customer_rating)  # 4.445
         title = products[x].name
-        price = products[x].sale_price
+        price = '$'+str(products[x].sale_price)
         url = products[x].product_url
         picture = products[x].medium_image   #.large_imgage
         temp = {'source': 'Walmart', 'picture': picture, 'name': title, 'price': price, 'url': url}
@@ -39,11 +76,13 @@ def EtsyAPI(search_content, items_list):
     url = "https://openapi.etsy.com/v2/listings/active.js?keywords=" +search_content + "&limit=12&includes=Images:1&api_key=" + api_key
 
     ###crawl to get info
-    reload(sys)
-    sys.setdefaultencoding('utf8')
+    #reload(sys)
+    #sys.setdefaultencoding('utf8')
+    importlib.reload(sys)
 
     r = requests.get(url)
-    page_source = r.content
+    #page_source = r.content.encode(encoding='UTF-8',errors='strict')
+    page_source = r.text
     print(page_source)
     #d = json.loads(page_source[4:])
     #print(d['price'])
@@ -98,10 +137,11 @@ def EbayAPI(search_content, items_list):
         append_num=0
         i=0
         while i<len(response.reply.searchResult.item) and append_num<10:
-            if response.reply.searchResult.item[i].galleryURL !='http://thumbs1.ebaystatic.com/pict/04040_0.jpg' and response.reply.searchResult.item[i].condition.conditionDisplayName == 'New':
+            if response.reply.searchResult.item[i].galleryURL !='http://thumbs1.ebaystatic.com/pict/04040_0.jpg':# and response.reply.searchResult.item[i].condition.conditionDisplayName == 'New':
                 title=response.reply.searchResult.item[i].title
-                price=response.reply.searchResult.item[i].sellingStatus.currentPrice.value
-                price+=' '+response.reply.searchResult.item[i].sellingStatus.currentPrice._currencyId
+                price = '$'+response.reply.searchResult.item[i].sellingStatus.currentPrice.value
+                # price=response.reply.searchResult.item[i].sellingStatus.currentPrice.value
+                # price+=' '+response.reply.searchResult.item[i].sellingStatus.currentPrice._currencyId
                 url=response.reply.searchResult.item[i].viewItemURL
                 picture=response.reply.searchResult.item[i].galleryURL
                 temp = {'source':'Ebay','picture':picture,'name': title, 'price': price, 'url':url}
@@ -121,11 +161,40 @@ def EbayAPI(search_content, items_list):
 
 
 def AmazonCrawl(search_content, items_list):
-    reload(sys)
-    sys.setdefaultencoding('utf8')
-    url = "https://www.amazon.com/s/keywords=" + search_content
-    r = requests.get(url)
-    page_source = r.content
+    #reload(sys)
+    #sys.setdefaultencoding('utf8')
+
+    importlib.reload(sys)
+    url = "https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=" + search_content
+    #url = "https://www.amazon.com/s/keywords=" + search_content
+
+    headers = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
+    r = requests.session().get(url,headers=headers)
+
+
+    XPATH_LIST = '//li[contatins(@id,"result_")]'
+    XPATH_URL = './/a[contatins(@class,"s-access-detail-page")]/@href'
+    XPATH_TITLE = '//a[contatins(@class,"s-access-detail-page")]/h2/text()'
+    XPATH_PRICE = './/span[@class="s-item__price"]/text()'
+    XPATH_PICTURE = './/img[@class="s-item__image-img"]/@data-src'
+
+
+
+    doc=html.fromstring(r.text)
+    product_list = doc.xpath(XPATH_LIST)
+
+    num=0
+    for product in product_list:
+        if num<10:
+            pic=product.xpath(XPATH_PICTURE)
+            title=product.xpath(XPATH_TITLE)
+            price = product.xpath(XPATH_PRICE)
+            url = product.xpath(XPATH_URL)
+            temp = {'source': 'Amazon','picture':pic, 'name': title, 'price': price, 'url': url}
+            items_list.append(temp)
+        num+=1
+    '''
+    page_source = r.text
     start = 0
     end = 0
     end_name=0
@@ -145,17 +214,18 @@ def AmazonCrawl(search_content, items_list):
         temp = {'source': 'Amazon', 'name': temp_name_str, 'price': temp_str, 'url': ''}
         #temp = {'name': temp_name_str, 'price': temp_str}
         items_list.append(temp)
-
+'''
         # print(start,end,temp_str)
         # print(start_name, end_name, temp_name_str)
 
 def BestBuyCrawl(search_content, items_list):
-    reload(sys)
-    sys.setdefaultencoding('utf8')
+    #reload(sys)
+    importlib.reload(sys)
+    #sys.setdefaultencoding('utf8')
 
     url = "https://www.bestbuy.com/site/searchpage.jsp?st="+search_content+"&_dyncharset=UTF-8&id=pcat17071&type=page&sc=Global&cp=1&nrp=&sp=&qp=&list=n&af=true&iht=y&usc=All+Categories&ks=960&keys=keys"
     r = requests.get(url)
-    page_source = r.content
+    page_source = r.text
     start = 0
     end = 0
     end_name = 0
@@ -179,7 +249,6 @@ def BestBuyCrawl(search_content, items_list):
         # print(start_name, end_name, temp_name_str)
 
 def index(request):
-
     global items_list
     if request.method == 'POST':
         items_list= []
@@ -188,13 +257,17 @@ def index(request):
 
         t0=time.clock()
         EbayAPI(search_content,items_list)
-        t1 = time.clock()
-        EtsyAPI(search_content,items_list)
-        t2 = time.clock()
+        # t1 = time.clock()
+        # t2 = time.clock()
         WalmartAPI(search_content, items_list)
-        #AmazonCrawl(search_content, items_list)
-        print("ebay:", t1-t0)
-        print("etsy:", t2 - t1)
+        #SortItemList(items_list)
+        AmazonCrawl(search_content, items_list)
+        EtsyAPI(search_content, items_list)
+        #SortItemList(items_list)
+        BestBuyAPI(search_content, items_list)
+
+        # print("ebay:", t1-t0)
+        # print("etsy:", t2 - t1)
 
     return render(request, 'index.html', {'data': items_list,'search_content':search_content})
 

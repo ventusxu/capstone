@@ -1,0 +1,8 @@
+lxml
+bottlenose
+python-dateutil
+requests
+wapy
+ebaysdk
+gunicorn
+django-heroku
