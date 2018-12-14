@@ -26,7 +26,7 @@ def strategy(items_list, avg_ebay):
     new_items_list = []
     for i in range(len(items_list)):
         try:
-            if float(items_list[i]['price'][1:]) >= (0.4 * avg_ebay): # and float(items_list[i]['price'][1:]) <= (30 * avg_ebay):
+            if float(items_list[i]['price'][1:]) >= (0.5 * avg_ebay): # and float(items_list[i]['price'][1:]) <= (30 * avg_ebay):
                 new_items_list.append(items_list[i])
         except:
             pass
@@ -115,7 +115,7 @@ def EtsyAPI(search_content, items_list):
     end_url =0
     end_picture=0
 
-    for x in range(30):
+    for x in range(15):
 
         #start_picture=page_source.find("\"url_75x75\":\"", end_picture)
         start_picture = page_source.find("\"url_fullxfull\":\"", end_picture)
