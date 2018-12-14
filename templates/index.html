@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/static/css/navbar-fixed-side.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Searching Results</title>
+
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <style type="text/css">
+
+        #box {
+            width: 1000px;
+            margin: 0px auto;
+            font-family: 'Times New Roman';
+            font-size: 18px;
+        }
+
+        #tb {
+            table-layout: fixed;
+        }
+
+        .table > thead > tr > th {
+            border-color: transparent;
+        }
+
+        .table > tbody > tr > td,
+        .table > tbody > tr > th {
+            border-width: 5px;
+            border-color: transparent;
+        }
+
+        li {
+            list-style-type: none;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div data-spy="scroll" data-target="#myScrollspy" data-offset="20">
+        
+
+
+        <div class="container-fluid text-center">
+<div class="container-fluid row content">
+<div class="navbar fixed-top navbar-light" style="background-color: #F4E7D5; height: 80px">
+  <div class="navbar-brand col-2" href="{% url 'home' %}">
+    <p style="Color:teal;font-size:50px"><img src="/static/img/moyu.jpg" width=60px height=50px align="center" />MoDeal <p>
+  </div>
+  <form class="form-inline col-8 col-sm" action="/index/" method="post">
+    {% csrf_token %}
+    <input class="form-control col-sm-5" style="margin-right: 6px" type="text" name="search_content" value=' {{ search_content  }}' placeholder="Enter product information" autocomplete="off">
+    <input type="submit" value="Search" id="search_content" class="btn btn-success my-2 my-sm-0">
+  </form>
+
+  {% if user.is_authenticated %}
+    <!-- <p> -->
+    <div class="nav-item container col-1">
+      <div class="col" style="display: inline-block, margin-right: 10px">
+        <i class="material-icons">person</i>
+        <a class="align-top" href="{% url 'user_home' %}">{{ user.username }}</a>
+      </div>
+      
+      <!-- <div style="display: inline-block">|</div> -->
+
+      <div class="col"style="display: inline-block">
+        <i class="material-icons">exit_to_app</i>
+        <a class="align-top" href="{% url 'account_logout' %}" target="_self" align="right">Log out</a>
+      </div>
+    </div>
+    <!-- </p> -->
+  {% else %}
+    <!-- <p> -->
+    <div class="nav-item">
+      <a type="button" class="btn btn-large"  href="{% url 'account_login' %}" target="_self" align="right">Log in</a>
+      <a type="button" class="btn btn-dark btn-large"  href="{% url 'account_signup' %}" target="_self" align="right">Sign up</a>
+    </div>
+    <!-- </p> -->
+  {% endif %}
+</div>
+</div>
+            <div class="container-fluid row content" style="padding-top: 80px">
+                <div class="col-sm-2 sidenav navbar-fixed-side" style="background-color: #DDF1F8">
+                    <p style="margin-top: 10%"><font size="6" color="teal">Filter</font></p>
+
+                    <div class="container">
+                        <input class="form-control" id="myInputMoneyMin" type="text" placeholder="Enter MIN price..">
+                        <br />
+                        <input class="form-control" id="myInputMoneyMax" type="text" placeholder="Enter MAX price..">
+                        <br />
+                        <input class="form-control" id="myInput" type="text" placeholder="Enter keywords">
+                        <!-- <button class="form-control" id="filterBtn">Filter!</button> -->
+                    </div>
+                </div>
+
+                <div class="container-fluid col-sm-8 text-left">
+
+                    <table class="table table-hover" id="tb" style="word-break:break-all; word-wrap:break-word; margin:auto">
+
+                        <tbody id="myTable">
+                            {% for item in data %}
+                            <tr class="item">
+                                <!-- <td class="text-left" width="15%"><img src="{{ item.picture }}" width: 180px height:180px /></td> -->
+                                <td class="text-left" width="15%">
+                                    <img class="shadow item_picture" src="{{ item.picture }}" width="110%"/>
+                                </td>
+                                <td class="text-left" style="padding-left: 50px" width="65%">
+                                    <li><p class="item_name"><font size="4"><a class="item_url" href="{{ item.url }}">{{ item.name }}</a></font></p></li>
+                                    <li><p class="item_price"><font size="5">{{ item.price }}</font><p></li>
+                                    <li><p class="item_source"><font size="3">{{ item.source }}</font><p></li>
+                                </td>
+                                <td class="text-left" width="20%">
+                                    {% if item.visible %}
+                                    <div class="visible">
+                                    {% else %}
+                                    <div class="invisible">
+                                    {% endif %}
+                                        <button type="button" class="addFavourite btn btn-outline-success my-2 my-sm-0">Add to Favorites</button>
+                                    </div>
+
+                                    {% if not item.visible %}
+                                    <div class="visible">
+                                    {% else %}
+                                    <div class="invisible">
+                                    {% endif %}
+                                        <button type="button" class="removeFavourite btn btn-outline-danger my-2 my-sm-0">Added</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <h1>No results are found... Try something else?</h1> 
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+            <div id="no_auth" class="card mb-4 shadow-sm text-black bg-teal">
+                <p>
+                    You're not logged in yet.
+                </p>
+                <a type="button" class="btn btn-large"  href="{% url 'account_login' %}" target="_self" align="right">Log in</a>
+                <p>
+                    Do not have an account? Sign up here:    
+                </p>
+                <a type="button" class="btn btn-dark btn-large"  href="{% url 'account_signup' %}" target="_self" align="right">Sign up</a>
+            </div>
+
+
+            <script>
+                // $(document).ready(function () {
+                //     $("#myInputMoneyMin").on("keyup", function () {
+                //         var filter_min = $(this).val();
+                //         $("#myInputMoneyMax").on("keyup", function () {
+                //             var filter_max = $(this).val();
+                //             $("#myTable tr").filter(function () {
+                //                 var value = $(this).find("#price").text().slice(1);
+                //                 $(this).toggle(parseFloat(value) >= parseFloat(filter_min) && parseFloat(value) <= parseFloat(filter_max));
+                //             });
+                //         });
+                //     });
+                // });
+
+                // $(document).ready(function () {
+                //     $("#myInput").on("keyup", function () {
+                //         var value = $(this).val().toLowerCase();
+                //         $("#myTable tr").filter(function () {
+                //             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                //         });
+                //     });
+                // });
+
+                $(document).ready(function () {
+                    $("#no_auth").dialog({
+                        autoOpen: false,
+                    });
+
+                    $(".form-control").on("keyup", function () {
+                        // console.log("clicked")
+                        var min_entered = $("#myInputMoneyMin").val().trim().length
+                        var max_entered = $("#myInputMoneyMax").val().trim().length
+                        var key_entered = $("#myInput").val().trim().length
+
+                        var filter_min = min_entered ? parseFloat($("#myInputMoneyMin").val()) : 0.
+                        var filter_max = max_entered ? parseFloat($("#myInputMoneyMax").val()) : 0.
+                        var keyword = key_entered ? $("#myInput").val().toLowerCase() : ""
+                        // console.log(filter_min)
+                        // console.log(filter_max)
+                        // console.log(keyword)
+                        // console.log()
+                        $("#myTable tr").filter(function () {
+                            var prices =  $(this).find(".item_price").text().slice(1).split('.')
+                            var price  = parseInt(prices[0]) + parseInt(prices[1])/100
+
+                            var is_min = min_entered ? price >= filter_min : true
+                            var is_max = max_entered ? price <= filter_max : true
+                            var has_key = key_entered ? $(this).find(".item_name").text().toLowerCase().indexOf(keyword) > -1 || $(this).find(".item_source").text().toLowerCase().indexOf(keyword) > -1 : true
+                            $(this).toggle(is_min && is_max && has_key)
+                        });
+                    });
+
+                    $(".addFavourite").click(function () {
+                        // alert("Added");
+                        // POST to server to add
+                        btn = $(this)
+                        item = $(this).parent().parent().parent();
+                        var name    = item.find(".item_name").text()
+                        var price   = item.find(".item_price").text().slice(1).split('.').join('')
+                        var url     = item.find(".item_url").attr('href')
+                        var source  = item.find(".item_source").text()
+                        var picture = item.find(".item_picture").attr('src')
+                        console.log("Add " + name + "\n" + "price: " + price);
+                        $.ajax({
+                            url: 'http://127.0.0.1:8000/add/',
+                            method: "GET",
+                            data: {
+                                product_url:    url,
+                                product_source: source,
+                                product_name:   name,
+                                product_price:  price,
+                                product_picture: picture,
+                            },
+                        })
+                        .done(function(msg) {
+
+                            if (msg === "Not authenticated") {
+                                alert("You are not logged in yet. Please login/signup first.")
+                            }
+                            else {
+                                btn.parent().addClass('invisible');
+                                btn.parent().next().removeClass('invisible');
+                            }
+                        })
+                    })
+
+
+                    $(".removeFavourite").click(function () {
+                        // alert("Added");
+                        // POST to server to add
+                        btn = $(this)
+                        item = $(this).parent().parent().parent();
+                        var name    = item.find(".item_name").text()
+                        var price   = item.find(".item_price").text().slice(1).split('.').join('')
+                        var url     = item.find(".item_url").attr('href')
+                        var source  = item.find(".item_source").text()
+                        var picture = item.find(".item_picture").attr('src')
+                        console.log("Add " + name + "\n" + "price: " + price);
+                        $.ajax({
+                            url: 'http://127.0.0.1:8000/remove/',
+                            method: "GET",
+                            data: {
+                                product_url:    url,
+                                product_source: source,
+                                product_name:   name,
+                                product_price:  price,
+                                product_picture: picture,
+                            },
+                        })
+                        .done(function(msg) {
+
+                            if (msg === "Not authenticated") {
+                                alert("You are not logged in yet. Please login/signup first.")
+                            }
+                            else {
+                                btn.parent().addClass('invisible');
+                                btn.parent().prev().removeClass('invisible');
+                            }
+                        })
+                    })
+                });
+
+            </script>
+        </div>
+
+    </div>
+
+
+</body>
+</html>

@@ -1,1 +1,1 @@
-web: gunicorn Capstone.wsgi
+web: gunicorn MoDeal_t.wsgi

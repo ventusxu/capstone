@@ -1,0 +1,67 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+
+
+
+<div class="navbar fixed-top navbar-light bg-teal">
+  <div class="navbar-brand" href="{% url 'home' %}">
+    <p style="Color:teal;font-size:50px"><img src="/static/img/moyu.jpg" width=60px height=50px align="center" />MoDeal <p>
+  </div>
+  <form class="form-inline my-2 my-lg-0" action="/index/" method="post">
+    {% csrf_token %}
+    <div class="div-box" id="box">
+      <p>
+        <input type="text" name="search_content" value=' {{ search_content  }}' placeholder="    Enter product information" autocomplete="off">
+        <input type="submit" value="Search" id="search_content" button class="btn btn-outline-success my-2 my-sm-0">
+      </p>
+    </div>
+  </form>
+
+  {% if user.is_authenticated %}
+    <!-- <p> -->
+    <div class="nav-item">
+      <p>Hi <a href="{% url 'user_home' %}">{{ user.username }}</a>!!</p>
+      <a href="{% url 'account_logout' %}" target="_self" align="right">Log out</a>
+    </div>
+    <!-- </p> -->
+  {% else %}
+    <!-- <p> -->
+    <div class="nav-item">
+      <a type="button" class="btn btn-large"  href="{% url 'account_login' %}" target="_self" align="right">Log in</a>
+      <a type="button" class="btn btn-dark btn-large"  href="{% url 'account_signup' %}" target="_self" align="right">Sign up</a>
+    </div>
+    <!-- </p> -->
+  {% endif %}
+</div>
