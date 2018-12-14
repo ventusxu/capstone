@@ -54,7 +54,10 @@
 <div class="container-fluid row content">
 <div class="navbar fixed-top navbar-light" style="background-color: #F4E7D5; height: 80px">
   <div class="navbar-brand col-2" href="{% url 'home' %}">
-    <p style="Color:teal;font-size:50px"><img src="/static/img/moyu.jpg" width=60px height=50px align="center" />MoDeal <p>
+    <a href="{% url 'home' %}">
+        <p style="Color:teal;font-size:50px">
+        <img src="/static/img/moyu.jpg" width=60px height=50px align="center" />MoDeal </p>
+    </a>
   </div>
   <form class="form-inline col-8 col-sm" action="/index/" method="post">
     {% csrf_token %}
