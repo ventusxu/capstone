@@ -7,3 +7,4 @@ ebaysdk
 gunicorn
 django-heroku
 django-allauth
+whitenoise
