@@ -223,8 +223,8 @@
                         var picture = item.find(".item_picture").attr('src')
                         console.log("Add\n" + name + "\n" + "price: " + price);
 
-                        jQuery.ajax({
-                            url: 'http://127.0.0.1:8000/remove/',
+                        $.ajax({
+                            url: 'https://moyudeal.herokuapp.com/remove/',
                             method: "GET",
                             data: {
                                 product_url:    url,

@@ -26,7 +26,7 @@ SECRET_KEY = 'w-b6t0t9*b^zl1d4(m+-!j^3raec+@r44qw(+ov+vmwi)wgqpp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['moyudeal.herokuapp.com']
 
 
 # Application definition

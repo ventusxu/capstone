@@ -217,7 +217,7 @@
                         var picture = item.find(".item_picture").attr('src')
                         console.log("Add " + name + "\n" + "price: " + price);
                         $.ajax({
-                            url: 'http://127.0.0.1:8000/add/',
+                            url: 'https://moyudeal.herokuapp.com/add/',
                             method: "GET",
                             data: {
                                 product_url:    url,
@@ -252,7 +252,7 @@
                         var picture = item.find(".item_picture").attr('src')
                         console.log("Add " + name + "\n" + "price: " + price);
                         $.ajax({
-                            url: 'http://127.0.0.1:8000/remove/',
+                            url: 'https://moyudeal.herokuapp.com/remove/',
                             method: "GET",
                             data: {
                                 product_url:    url,
