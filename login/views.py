@@ -178,7 +178,7 @@ def EbayAPI(search_content, items_list):
         assert (type(item.listingInfo.endTime) == datetime.datetime)
         assert (type(response.dict()) == dict)
 
-    except (AttributeError, ConnectionError) as e:
+    except (AssertionError, AttributeError, ConnectionError) as e:
         pass
 
 
