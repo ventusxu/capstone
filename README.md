@@ -1,6 +1,7 @@
 # MoDeal
 capstone project for MCS
-A deal finder that 
+
+A deal finder that gather product info from 4 different online shopping platforms.
 
 # Group
 Moyu
