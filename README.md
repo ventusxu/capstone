@@ -14,8 +14,9 @@ Moyu
 https://moyudeal.herokuapp.com/
 
 # Dependencies
-Python version: python 2.7.15
-To install all dependencies,
+Python version: ```python 2.7.15```
+
+To install all dependencies：
 ```
 pip install -r requirements.txt
 ```
